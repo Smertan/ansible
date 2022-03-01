@@ -1,0 +1,24 @@
+---
+
+- name: Print out directory exists
+  debug:
+    msg: "{{ directory }} already exists! Choose another name"
+  when: project_folder.stat.exists
+
+# Gathers a list of directories already created if the supplied name
+# is in conflict.
+- name: list the files in the directory
+  find:
+    path: "{{ directory }}/../"
+    file_type: directory
+  register: found
+
+# Loops through the list of directories limiting the output using the
+# loop_control function showing only the label. If msg isn't used in
+# debug the default "Hello world!" is displayed.
+- name: print results
+  debug:
+    msg: "{{ item.path }}"
+  loop: "{{ found.files }}"  # loops through the items
+  loop_control:
+    label: "{{ item.path }}"
