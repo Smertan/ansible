@@ -1,0 +1,20 @@
+---
+
+# Checks if the directory named by the variable exists. It registers the
+# response where the method .stat.exists can be used later on for future
+# tasks.
+- name: Check if the directory exists
+  stat:
+    path: "{{ directory }}"
+  register: project_folder
+
+
+# Calls the create_dir.yml task if the folder doesn't existi to initiate
+# the creation.
+- include_tasks: create_dir.yml
+  when: not project_folder.stat.exists
+
+
+# Calls the dir_exists.yml task if the folder exists to initiate the creation
+- include_tasks: dir_exists.yml
+  when: project_folder.stat.exists
