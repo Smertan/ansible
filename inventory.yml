@@ -1,0 +1,14 @@
+---
+
+all:
+  children:
+    servers:
+      hosts:
+        automation_server:
+          ansible_host: 10.12.120.18
+        10.12.120.120:
+    lab:
+      hosts:
+        git_server:
+          ansible_host: 10.12.120.5
+          ansible_user: pi
