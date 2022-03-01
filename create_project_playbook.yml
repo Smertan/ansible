@@ -1,0 +1,25 @@
+---
+
+- hosts: git_server
+  gather_facts: false
+  remote_user: "git"
+
+  vars_prompt:
+    - name: directory
+      prompt: Enter directory name to be created
+      private: false
+
+  # The pre_tasks are run before the role. Below checks are performed to
+  # confirm the directory name ends .git.
+  pre_tasks:
+    - name: set directory name to the correct format
+      set_fact:
+        directory: "{{ directory }}.git"
+      when: directory is not regex("\.git$")
+    - debug:
+        msg: "Updated the string! {{ directory }}"
+      when: directory is regex("\.git$")
+
+  # Calls the role create_project in the roles directory
+  roles:
+    - create_project
