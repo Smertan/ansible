@@ -1,0 +1,17 @@
+---
+
+# Creates a new directory if it doesn't preexist
+- name: Create a new directory for Git
+  ansible.builtin.file:
+    path: "{{ directory }}"
+    state: directory
+  when: not project_folder.stat.exists
+#  notify: Create a bare repository
+
+- name: Print final message
+  ansible.builtin.debug:
+    msg: "{{ directory }} has been created"
+
+# git init --bare for the newly created directory
+- name: Create a bare repository
+  command: "git init --bare {{ directory }}"
